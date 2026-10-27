@@ -31,7 +31,7 @@
   /* 山水地景 */
   --sky1:#bfe0ea;--sky2:#f4ecd6;--sun:#f3b45a;--star:transparent;
   --mtn-far:#7f9d8c;--mtn-near:#3f7655;--plain:#9cc27a;--tree:#2d6a45;
-  --sea1:#4f9ab8;--sea2:#1f5d82;--wave:#e9f5f8;--river:#5aa7c9;
+  --sea1:#4f9ab8;--sea2:#1f5d82;--wave:#e9f5f8;--river:#5aa7c9;--paddy:#b8d36b;--paddy2:#9cc65e;--river-wu:#9a8a63;
   --font-display:"Noto Serif TC","Songti TC","PMingLiU",serif;
   --font-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
   color-scheme:light;
@@ -42,14 +42,14 @@
   --wu-red:#ec6b73;--wu-blue:#7ea4ea;--wu-soft:#1f2433;--empty:#222d25;
   --sky1:#0b1a2b;--sky2:#203a45;--sun:#f1e6b8;--star:#f4f1dc;
   --mtn-far:#2c4a43;--mtn-near:#1d3a2b;--plain:#3c5e34;--tree:#1b4a2e;
-  --sea1:#173e57;--sea2:#0b2536;--wave:#7fb2c7;--river:#3f86a8;color-scheme:dark}}
+  --sea1:#173e57;--sea2:#0b2536;--wave:#7fb2c7;--river:#3f86a8;--paddy:#4f6a31;--paddy2:#425e2b;--river-wu:#6b5f45;color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#111a14;--paper:#18241c;--ink:#e9eee6;--muted:#a4b0a4;--line:#2d3b31;
   --lin:#4fb37c;--lin-deep:#9fdcb7;--lin-soft:#1d3527;--brown:#c99a6e;--orange:#f0994c;--orange-soft:#3a2a1a;
   --wu-red:#ec6b73;--wu-blue:#7ea4ea;--wu-soft:#1f2433;--empty:#222d25;
   --sky1:#0b1a2b;--sky2:#203a45;--sun:#f1e6b8;--star:#f4f1dc;
   --mtn-far:#2c4a43;--mtn-near:#1d3a2b;--plain:#3c5e34;--tree:#1b4a2e;
-  --sea1:#173e57;--sea2:#0b2536;--wave:#7fb2c7;--river:#3f86a8;color-scheme:dark}
+  --sea1:#173e57;--sea2:#0b2536;--wave:#7fb2c7;--river:#3f86a8;--paddy:#4f6a31;--paddy2:#425e2b;--river-wu:#6b5f45;color-scheme:dark}
 
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.7;
@@ -110,49 +110,91 @@ section.block{margin-top:36px}
 .seg-b{border:0;background:none;border-radius:99px;padding:6px 14px;font-size:14px;font-weight:700;cursor:pointer;color:var(--muted)}
 .seg-b[data-mode="lin"][aria-pressed="true"]{background:var(--lin);color:#fff}
 .seg-b[data-mode="wu"][aria-pressed="true"]{background:linear-gradient(90deg,var(--wu-blue),var(--wu-red));color:#fff}
-.scene{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);aspect-ratio:1000/440;max-width:100%;touch-action:pan-y}
+.scene{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);aspect-ratio:1000/460;max-width:100%;touch-action:pan-y}
 .scene svg{display:block;width:100%;height:100%}
 .ly{transition:transform .25s ease-out}
-.scene .veg{transition:filter .8s}
-.scene.wu #lyNear,.scene.wu #plain,.scene.wu #trees{filter:saturate(.25) brightness(.92)}
-.river{fill:none;stroke:var(--river);stroke-width:7;stroke-linecap:round;transition:stroke-width .8s,opacity .8s}
-.river-flow{fill:none;stroke:var(--wave);stroke-width:2;stroke-dasharray:6 18;stroke-linecap:round;opacity:.8;animation:flow 2.4s linear infinite}
-.scene.wu .river{stroke-width:3;opacity:.55}
-.scene.wu .river-flow{opacity:.2}
+.hot{cursor:pointer;transition:filter .6s,opacity .6s}
+.hot:hover{filter:brightness(1.08)}
+.hot:focus{outline:none}
+.hot:focus-visible{filter:drop-shadow(0 0 6px var(--orange))}
+.hot.sel{filter:drop-shadow(0 0 8px var(--orange))}
+.hot.void{filter:grayscale(1) opacity(.55)}
+.hot.void.sel{filter:grayscale(1) opacity(.7) drop-shadow(0 0 8px var(--wu-red))}
+.river{fill:none;stroke:var(--river);stroke-width:8;stroke-linecap:round;transition:stroke .8s,stroke-width .8s}
+.river-flow{fill:none;stroke:var(--wave);stroke-width:2;stroke-dasharray:6 18;stroke-linecap:round;opacity:.85;animation:flow 2.4s linear infinite}
+.pond{fill:var(--river);transition:fill .8s}
+.scene.wu .river{stroke:var(--river-wu);stroke-width:4}
+.scene.wu .pond{fill:var(--river-wu)}
+.scene.wu .river-flow{opacity:.15}
+.scene.wu .pump,.scene.wu .boats{opacity:0}
+.pump,.boats{transition:opacity .6s}
 @keyframes flow{to{stroke-dashoffset:-48}}
 .waves path{fill:none;stroke:var(--wave);stroke-width:2;stroke-linecap:round;opacity:.6;animation:wave 5s ease-in-out infinite alternate}
 .waves path:nth-child(2){animation-delay:-1.5s}.waves path:nth-child(3){animation-delay:-3s}
 @keyframes wave{to{transform:translateX(-18px)}}
+.boat{animation:bob 3.2s ease-in-out infinite alternate}
+.boat.b2{animation-duration:2.6s}
+@keyframes bob{to{translate:-8px 3px}}
+.fish{fill:none;stroke:var(--wave);stroke-width:3;stroke-linecap:round;stroke-dasharray:40;animation:jump 3s ease-in-out infinite}
+@keyframes jump{0%,60%{stroke-dashoffset:40}80%{stroke-dashoffset:0}100%{stroke-dashoffset:-40}}
+.balloon{animation:float 4s ease-in-out infinite alternate}
+@keyframes float{to{translate:0 10px}}
+.drop{animation:drip 1.6s ease-in infinite}
+@keyframes drip{from{translate:0 -4px;opacity:0}40%{opacity:1}to{translate:0 6px;opacity:0}}
 #stars circle{fill:var(--star)}
 .tree{transform-box:fill-box;transform-origin:50% 100%;transition:transform .6s cubic-bezier(.3,1.4,.5,1),opacity .6s}
 .tree.gone{transform:scale(0);opacity:0}
-.pin{cursor:pointer;transition:opacity .3s}
-.pin .halo{fill:var(--orange);opacity:0;transition:opacity .2s}
-.pin:hover .halo,.pin.sel .halo,.pin:focus-visible .halo{opacity:.35}
-.pin .dotp{stroke:#fff;stroke-width:2.5;transition:fill .5s}
-.pin text{font-size:13px;font-weight:700;fill:#fff;paint-order:stroke;stroke:rgba(0,0,0,.55);stroke-width:3px;text-anchor:middle;pointer-events:none}
-.pin.void .dotp{fill:transparent!important;stroke:var(--wu-red);stroke-dasharray:4 3}
-.pin.dim{opacity:.25}
-.pin:focus{outline:none}
-.zones{position:absolute;left:10px;top:10px;display:flex;gap:4px;flex-wrap:wrap}
-.zone-b{border:0;border-radius:99px;padding:4px 12px;font-size:13px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.85);color:#1f2a22}
-.zone-b[aria-pressed="true"]{background:var(--orange);color:#fff}
-.land-info{margin-top:12px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 18px;display:grid;grid-template-columns:1fr auto;gap:6px 16px;align-items:center}
-.land-info h3{font-size:20px;color:var(--lin-deep)}
-.land-info p{margin:0;font-size:15px}
-.land-info .vsline{grid-column:1/2;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:15px}
+.paddy{fill:var(--paddy);transition:fill .8s}
+.paddy.alt{fill:var(--paddy2)}
+.rice{fill:none;stroke:var(--tree);stroke-width:2;stroke-dasharray:2 6;opacity:.7}
+.pill rect{fill:var(--paper);opacity:.94;stroke:var(--lin);stroke-width:1.5}
+.pill text{fill:var(--lin-deep);font-weight:900;text-anchor:middle;font-family:var(--font-body)}
+.pill.void rect{stroke:var(--wu-red);stroke-dasharray:5 4}
+.pill.void text{fill:var(--wu-red)}
+.pill.sel rect{fill:var(--orange-soft);stroke:var(--orange);stroke-width:2.5}
+.spots{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.spot{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:5px 12px 5px 6px;font-size:14px;font-weight:700;cursor:pointer}
+.spot svg{width:24px;height:24px}
+.spot[aria-pressed="true"]{border-color:var(--orange);background:var(--orange-soft)}
+.spot.void{color:var(--wu-red);border-style:dashed}
+.land-info{margin-top:12px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:auto 1fr auto;gap:8px 16px;align-items:center}
+.land-info .ill{grid-row:1/4}
+.land-info .lead{margin:0;font-size:13px;color:var(--muted);grid-column:2/3}
+.land-info h3{font-size:20px;color:var(--lin-deep);grid-column:2/3}
+.land-info .vsline{grid-column:2/3;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:15px}
 .land-info .vsline b.l{color:var(--lin)}
 .land-info .vsline b.w{color:var(--wu-blue)}
 .land-info .vsline b.x{color:var(--wu-red)}
-.land-info .go{grid-row:1/3;grid-column:2;border:0;border-radius:10px;background:var(--lin);color:#fff;font-weight:700;padding:9px 14px;cursor:pointer;white-space:nowrap}
+.land-info .plant{grid-column:2/3;font-size:14px;color:var(--brown);margin:0}
+.land-info .go{grid-row:1/4;grid-column:3;border:0;border-radius:10px;background:var(--lin);color:#fff;font-weight:700;padding:9px 14px;cursor:pointer;white-space:nowrap}
 @media (max-width:720px){
-  .pin text{display:none}
-  .pin .dotp{r:20}
-  .pin .halo{r:32}
-  .land-info{grid-template-columns:1fr}
-  .land-info .go{grid-row:auto;grid-column:auto;justify-self:start}
+  .land-info{grid-template-columns:auto 1fr}
+  .land-info .go{grid-row:auto;grid-column:1/3;justify-self:start}
+  .land-info .ill{grid-row:1/3}
 }
-@media (prefers-reduced-motion:reduce){.river-flow,.waves path{animation:none}}
+@media (prefers-reduced-motion:reduce){.river-flow,.waves path,.boat,.fish,.balloon,.drop{animation:none}}
+
+/* 政見插畫 */
+.ill{width:56px;height:56px;flex:none;border-radius:14px;background:var(--lin-soft);display:grid;place-items:center}
+.ill svg{width:42px;height:42px}
+.ttl{display:flex;gap:14px;align-items:center;min-width:0}
+.f-g{fill:var(--lin)}.f-d{fill:var(--lin-deep)}.f-o{fill:var(--orange)}.f-b{fill:var(--brown)}.f-w{fill:var(--river)}.f-p{fill:var(--paper)}
+.st{fill:none;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.s-g{stroke:var(--lin)}.s-d{stroke:var(--lin-deep)}.s-o{stroke:var(--orange)}.s-b{stroke:var(--brown)}.s-w{stroke:var(--river)}.s-p{stroke:var(--paper)}
+.pet{fill:var(--paper);stroke:var(--lin);stroke-width:2.5}
+
+/* 願景 */
+.vision{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vis{border-radius:14px;padding:14px 16px;display:grid;gap:4px;min-width:0}
+.vis p{margin:0;font-size:15px}
+.vis.lin{background:var(--lin-soft);border:1px solid var(--lin)}
+.vis.wu{background:var(--wu-soft);border:1px solid var(--line)}
+.vis .party{font-size:13px;font-weight:900;letter-spacing:.08em}
+.vis.lin .party{color:var(--lin)}
+.vis.wu .party{color:var(--wu-blue)}
+.vis .dir{font-family:var(--font-display);font-weight:900;font-size:18px}
+.vis.lin .dir{color:var(--lin-deep)}
+@media (max-width:720px){.vision{grid-template-columns:1fr}}
 
 /* controls */
 .controls{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px;display:grid;gap:10px;border-bottom:1px solid var(--line)}
@@ -221,7 +263,19 @@ footer{margin-top:40px;font-size:13px;color:var(--muted);border-top:1px solid va
   <header class="hero">
     <div class="eyebrow">2026 宜蘭縣長選舉 · 政見對照</div>
     <h1>同一個宜蘭，<em>兩份政見</em></h1>
-    <p class="lede">以林國漳提出的每一個政見類別為基準，逐類對照吳宗憲有沒有提出相對應的宜蘭縣政主張。看看哪一份更全面、更照顧每一個宜蘭人。</p>
+    <p class="lede">整理民進黨林國漳與國民黨吳宗憲兩位宜蘭縣長候選人的政見方向與願景，看看哪一份更全面、更照顧每一個宜蘭人。</p>
+    <div class="vision">
+      <div class="vis lin">
+        <div class="party">民進黨・林國漳</div>
+        <p class="dir">方向：全面治理，照顧每一個人</p>
+        <p>從山林綠網、勁水治水、品牌農業到海洋經濟，守護宜蘭的山水；同時精準照顧弱勢、長者與孩子，用青年住宅、教育與文化留住下一代，打造永續宜蘭。</p>
+      </div>
+      <div class="vis wu">
+        <div class="party">國民黨・吳宗憲</div>
+        <p class="dir">方向：三明治減壓、宜蘭線 +1</p>
+        <p>以發放式福利為主，包括 65 歲免健保、敬老卡、育兒消費券，並寄望招商引進科技產業與跨縣市合作。</p>
+      </div>
+    </div>
 
     <div class="score" aria-label="比較總結">
       <div class="side lin">
@@ -248,36 +302,76 @@ footer{margin-top:40px;font-size:13px;color:var(--muted);border-top:1px solid va
       </div>
     </div>
     <div class="scene" id="scene">
-      <svg viewBox="0 0 1000 440" id="land" role="img" aria-labelledby="landDesc" preserveAspectRatio="xMidYMid slice">
-        <title id="landDesc">宜蘭山水示意圖：左側雪山山脈，中間蘭陽平原與蘭陽溪，右側太平洋與龜山島，各政見類別標示在對應地景上</title>
+      <svg viewBox="0 0 1000 460" id="land" role="img" aria-labelledby="landDesc">
+        <title id="landDesc">宜蘭山水示意圖：山上是百萬植樹，蘭陽溪與滯洪池、抽水站是勁水大縣章，平原是好農稻田與文化戲台，海上是漁船與龜山島，天上的熱氣球代表觀光</title>
         <defs>
           <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--sky1)"/><stop offset="1" stop-color="var(--sky2)"/></linearGradient>
           <linearGradient id="gSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--sea1)"/><stop offset="1" stop-color="var(--sea2)"/></linearGradient>
         </defs>
-        <rect width="1000" height="440" fill="url(#gSky)"/>
+        <rect width="1000" height="460" fill="url(#gSky)"/>
         <g id="stars"></g>
-        <circle id="sun" cx="860" cy="80" r="26" fill="var(--sun)"/>
+        <circle id="sun" cx="870" cy="78" r="26" fill="var(--sun)"/>
         <g id="lyFar" class="ly"><path fill="var(--mtn-far)" d="M-40,250 L40,170 L95,200 L190,92 L240,140 L270,128 L330,175 L390,140 L450,190 L520,165 L600,215 L690,220 L760,262 L-40,262 Z"/></g>
-        <g id="lyNear" class="ly"><path fill="var(--mtn-near)" d="M-40,290 C40,230 90,250 140,215 C190,185 230,240 290,232 C350,222 400,250 470,246 C540,242 600,262 700,268 L760,280 L-40,300 Z"/></g>
-        <path fill="url(#gSea)" d="M690,262 L1000,250 L1000,440 L820,440 C790,380 760,320 690,262 Z"/>
-        <g id="waves" class="waves">
-          <path d="M760,300 q15,-6 30,0 t30,0 t30,0" /><path d="M860,350 q15,-6 30,0 t30,0 t30,0"/><path d="M800,400 q15,-6 30,0 t30,0 t30,0 t30,0"/><path d="M900,280 q12,-5 24,0 t24,0"/>
+
+        <g id="lyNear" class="ly">
+          <g class="hot" data-id="forest" tabindex="0" role="button" aria-label="山：百萬植樹，森林城鄉">
+            <path fill="var(--mtn-near)" d="M-40,290 C40,230 90,250 140,215 C190,185 230,240 290,232 C350,222 400,250 470,246 C540,242 600,262 700,268 L760,280 L-40,300 Z"/>
+            <g id="trees"></g>
+          </g>
         </g>
-        <path id="turtle" fill="var(--mtn-near)" d="M842,262 Q858,246 874,248 Q884,222 896,240 Q915,246 938,262 Z"/>
-        <path id="plain" fill="var(--plain)" d="M-40,285 C150,270 400,262 700,268 C760,320 790,380 820,440 L-40,440 Z"/>
-        <g id="trees"></g>
-        <path id="river" class="river" d="M230,262 C260,300 330,290 360,320 C390,350 470,330 520,312 C590,288 640,330 700,318 C730,312 750,300 772,312"/>
-        <path id="riverFlow" class="river-flow" d="M230,262 C260,300 330,290 360,320 C390,350 470,330 520,312 C590,288 640,330 700,318 C730,312 750,300 772,312"/>
-        <g id="pins"></g>
+
+        <g class="hot" data-id="ocean" tabindex="0" role="button" aria-label="海：海洋新宜蘭">
+          <path fill="url(#gSea)" d="M690,262 L1000,250 L1000,460 L830,460 C795,390 765,325 690,262 Z"/>
+          <g class="waves"><path d="M770,300 q15,-6 30,0 t30,0 t30,0"/><path d="M870,360 q15,-6 30,0 t30,0 t30,0"/><path d="M820,420 q15,-6 30,0 t30,0 t30,0 t30,0"/><path d="M930,290 q12,-5 24,0 t24,0"/></g>
+          <path fill="var(--mtn-near)" d="M842,262 Q858,246 874,248 Q884,222 896,240 Q915,246 938,262 Z"/>
+          <g class="boats">
+            <g class="boat" transform="translate(820,330)"><path fill="var(--brown)" d="M-22,0 h44 l-7,10 h-30 z"/><path fill="var(--paper)" d="M0,-28 v26 h-16 z"/><path stroke="var(--brown)" stroke-width="2" d="M0,-30 v30"/></g>
+            <g class="boat b2" transform="translate(935,395)"><path fill="var(--orange)" d="M-18,0 h36 l-6,8 h-24 z"/><path fill="var(--paper)" d="M0,-22 v20 h12 z"/><path stroke="var(--brown)" stroke-width="2" d="M0,-24 v24"/></g>
+            <path class="fish" d="M880,445 q10,-26 22,0" />
+          </g>
+        </g>
+
+        <path fill="var(--plain)" d="M-40,285 C150,270 400,262 700,268 C765,325 795,390 830,460 L-40,460 Z"/>
+
+        <g class="hot" data-id="agri" tabindex="0" role="button" aria-label="平原：宜蘭品牌好農計畫">
+          <g id="paddies"></g>
+        </g>
+
+        <g class="hot" data-id="water" tabindex="0" role="button" aria-label="水：宜蘭勁水大縣章">
+          <path class="river" d="M230,262 C260,300 330,290 360,320 C390,350 470,330 520,312 C590,288 640,330 700,318 C730,312 750,300 772,312"/>
+          <path class="river-flow" d="M230,262 C260,300 330,290 360,320 C390,350 470,330 520,312 C590,288 640,330 700,318 C730,312 750,300 772,312"/>
+          <ellipse class="pond" cx="565" cy="348" rx="34" ry="10"/>
+          <g class="pump" transform="translate(656,350)">
+            <rect x="-16" y="-14" width="32" height="22" rx="2" fill="var(--paper)" stroke="var(--brown)" stroke-width="2"/>
+            <path fill="var(--brown)" d="M-20,-14 L0,-26 L20,-14 Z"/>
+            <path class="drop" fill="var(--river)" d="M0,-8 c4,6 6,9 6,12 a6,6 0 0 1 -12,0 c0,-3 2,-6 6,-12 z"/>
+          </g>
+        </g>
+
+        <g class="hot" data-id="culture" tabindex="0" role="button" aria-label="文化立縣 2.0" transform="translate(130,334)">
+          <path fill="var(--brown)" d="M-34,-20 c12,-2 22,-10 34,-18 c12,8 22,16 34,18 z"/>
+          <rect x="-26" y="-20" width="52" height="6" fill="var(--orange)"/>
+          <rect x="-24" y="-14" width="6" height="26" fill="var(--orange)"/>
+          <rect x="18" y="-14" width="6" height="26" fill="var(--orange)"/>
+          <rect x="-30" y="12" width="60" height="6" fill="var(--brown)"/>
+          <circle cx="0" cy="-4" r="7" fill="var(--orange)"/>
+        </g>
+
+        <g id="lyBalloon" class="ly">
+          <g class="hot" data-id="tour" tabindex="0" role="button" aria-label="觀光立縣 2.0">
+            <g class="balloon">
+              <path fill="var(--orange)" d="M560,40 c18,0 30,13 30,30 c0,15 -16,26 -23,33 h-14 c-7,-7 -23,-18 -23,-33 c0,-17 12,-30 30,-30 z"/>
+              <path fill="none" stroke="var(--paper)" stroke-width="3" d="M560,40 c-8,14 -8,48 0,63 M560,40 c8,14 8,48 0,63"/>
+              <path stroke="var(--brown)" stroke-width="2" d="M554,103 v8 M566,103 v8"/>
+              <rect x="552" y="110" width="16" height="11" rx="2" fill="var(--brown)"/>
+            </g>
+          </g>
+        </g>
+
+        <g id="pills"></g>
       </svg>
-      <div class="zones" role="group" aria-label="地景分區">
-        <button type="button" class="zone-b" data-zone="all" aria-pressed="true">全部</button>
-        <button type="button" class="zone-b" data-zone="mtn" aria-pressed="false">山</button>
-        <button type="button" class="zone-b" data-zone="river" aria-pressed="false">溪</button>
-        <button type="button" class="zone-b" data-zone="plain" aria-pressed="false">平原</button>
-        <button type="button" class="zone-b" data-zone="sea" aria-pressed="false">海</button>
-      </div>
     </div>
+    <div class="spots" id="spots" role="group" aria-label="地景政見"></div>
     <div class="land-info" id="landInfo" aria-live="polite"></div>
   </section>
 
@@ -655,7 +749,7 @@ function renderCards(){
     return `
     <article class="card ${state.expanded?"":"collapsed"}" id="c-${c.id}">
       <div class="card-top">
-        <div><div class="tag">${esc(c.tag)}</div><h3>${esc(c.name)}</h3></div>
+        <div class="ttl"><span class="ill">${icon(c.id)}</span><div><div class="tag">${esc(c.tag)}</div><h3>${esc(c.name)}</h3></div></div>
         <span class="win">${trophy}林國漳勝</span>
       </div>
       <div class="cols">
@@ -692,70 +786,128 @@ $("#expandAll").addEventListener("click", ()=>{
   renderCards();
 });
 
-/* ---------- 山水地景 ---------- */
-const SPOTS = {
-  forest:[150,196,"mtn"], trail:[300,182,"mtn"], hakka:[430,214,"mtn"],
-  water:[520,296,"river"],
-  sport:[70,330,"plain"], agri:[150,312,"plain"], labor:[110,392,"plain"], welfare:[230,358,"plain"],
-  kids:[220,420,"plain"], culture:[320,330,"plain"], elder:[330,402,"plain"], women:[420,366,"plain"],
-  edu:[520,404,"plain"], industry:[610,350,"plain"], youth:[430,420,"plain"], traffic:[660,300,"plain"],
-  tour:[750,350,"sea"], ocean:[905,330,"sea"]
+/* ---------- 政見插畫 ---------- */
+const ICONS = {
+  agri:`<path class="st s-b" d="M10 54h44"/><path class="st s-g" d="M32 54V18M22 54V28M42 54V28"/><g class="f-o"><ellipse cx="32" cy="14" rx="4" ry="7"/><ellipse cx="22" cy="24" rx="3.5" ry="6"/><ellipse cx="42" cy="24" rx="3.5" ry="6"/><ellipse cx="27" cy="34" rx="3" ry="5" transform="rotate(-30 27 34)"/><ellipse cx="37" cy="34" rx="3" ry="5" transform="rotate(30 37 34)"/></g>`,
+  welfare:`<path class="f-o" d="M32 30c-6-8-16-3-12 5 2 4 12 11 12 11s10-7 12-11c4-8-6-13-12-5z"/><path class="st s-g" d="M8 40c6 0 10 4 14 8h10M56 40c-6 0-10 4-14 8h-10"/><path class="st s-g" d="M6 54h52"/>`,
+  elder:`<rect class="f-g" x="8" y="16" width="48" height="32" rx="6"/><rect class="f-p" x="14" y="22" width="18" height="12" rx="2"/><circle class="f-o" cx="45" cy="38" r="6"/><path class="st s-p" d="M14 41h16"/>`,
+  women:`<circle class="f-o" cx="32" cy="20" r="9"/><path class="f-b" d="M22 18c1-10 19-10 20 0-5-4-15-4-20 0z"/><path class="f-g" d="M16 56c0-13 7-24 16-24s16 11 16 24z"/>`,
+  forest:`<path class="f-g" d="M20 8 8 34h24z"/><path class="f-d" d="M42 14 28 44h28z"/><path class="st s-b" d="M20 34v14M42 44v10"/><path class="st s-g" d="M6 56h52"/>`,
+  sport:`<circle class="f-o" cx="32" cy="32" r="22"/><path class="st s-p" d="M10 32h44M32 10c-9 11-9 33 0 44M32 10c9 11 9 33 0 44"/>`,
+  youth:`<path class="f-g" d="M8 32 32 12l24 20v22H8z"/><rect class="f-p" x="27" y="38" width="10" height="16" rx="1"/><rect class="f-p" x="14" y="34" width="8" height="8"/><rect class="f-p" x="42" y="34" width="8" height="8"/><circle class="f-o" cx="48" cy="12" r="6"/>`,
+  kids:`<path class="f-o" d="M32 6 48 26 32 46 16 26z"/><path class="st s-p" d="M32 8v36M18 26h28"/><path class="st s-g" d="M32 46c-5 5 5 8 0 13"/>`,
+  hakka:`<g><ellipse class="pet" cx="32" cy="17" rx="8" ry="11"/><ellipse class="pet" cx="32" cy="17" rx="8" ry="11" transform="rotate(72 32 32)"/><ellipse class="pet" cx="32" cy="17" rx="8" ry="11" transform="rotate(144 32 32)"/><ellipse class="pet" cx="32" cy="17" rx="8" ry="11" transform="rotate(216 32 32)"/><ellipse class="pet" cx="32" cy="17" rx="8" ry="11" transform="rotate(288 32 32)"/></g><circle class="f-o" cx="32" cy="32" r="6"/>`,
+  labor:`<path class="f-o" d="M12 40a20 20 0 0 1 40 0z"/><rect class="f-b" x="8" y="40" width="48" height="7" rx="3"/><path class="st s-p" d="M32 22v14"/>`,
+  water:`<path class="f-w" d="M32 6c8 12 16 20 16 30a16 16 0 0 1-32 0c0-10 8-18 16-30z"/><path class="st s-p" d="M22 38c4 3 7 3 10 0s6-3 10 0"/>`,
+  ocean:`<path class="f-b" d="M10 38h44l-7 10H17z"/><path class="f-o" d="M32 10v26H18z"/><path class="st s-b" d="M32 8v30"/><path class="st s-w" d="M6 56c5-4 9-4 13 0s9 4 13 0 9-4 13 0 8 4 13 0"/>`,
+  trail:`<path class="f-g" d="M4 54 24 18l12 18 8-10 16 28z"/><path class="st s-o" stroke-dasharray="3 5" d="M30 54c-6-6 8-8 2-14s6-8 2-12"/>`,
+  traffic:`<rect class="f-g" x="16" y="8" width="32" height="40" rx="8"/><rect class="f-p" x="21" y="14" width="22" height="14" rx="3"/><circle class="f-o" cx="24" cy="38" r="3"/><circle class="f-o" cx="40" cy="38" r="3"/><path class="st s-b" d="M20 57l6-9M44 57l-6-9"/>`,
+  tour:`<path class="f-o" d="M32 6c11 0 18 8 18 18 0 9-10 16-14 20h-8c-4-4-14-11-14-20 0-10 7-18 18-18z"/><path class="st s-p" d="M32 7c-5 8-5 30 0 37M32 7c5 8 5 30 0 37"/><rect class="f-b" x="27" y="48" width="10" height="9" rx="2"/>`,
+  culture:`<path class="f-b" d="M6 26c10-2 18-10 26-16 8 6 16 14 26 16z"/><rect class="f-o" x="14" y="26" width="36" height="6"/><rect class="f-g" x="16" y="32" width="6" height="22"/><rect class="f-g" x="42" y="32" width="6" height="22"/><path class="st s-b" d="M8 56h48"/>`,
+  edu:`<path class="f-g" d="M6 14c9-2 17 0 26 4v36c-9-4-17-6-26-4z"/><path class="f-d" d="M58 14c-9-2-17 0-26 4v36c9-4 17-6 26-4z"/><path class="st s-p" d="M12 25c4 0 9 1 14 3M12 33c4 0 9 1 14 3"/>`,
+  industry:`<rect class="f-g" x="16" y="16" width="32" height="32" rx="4"/><rect class="f-o" x="24" y="24" width="16" height="16" rx="2"/><path class="st s-b" d="M24 8v8M32 8v8M40 8v8M24 48v8M32 48v8M40 48v8M8 24h8M8 32h8M8 40h8M48 24h8M48 32h8M48 40h8"/>`
 };
-const NS = "http://www.w3.org/2000/svg";
+const icon = id => `<svg viewBox="0 0 64 64" aria-hidden="true">${ICONS[id]||""}</svg>`;
+
+/* ---------- 山水地景 ---------- */
+const LAND = [
+  {id:"forest",  label:"山・百萬植樹",   at:[300,205]},
+  {id:"water",   label:"水・勁水大縣章", at:[600,286]},
+  {id:"agri",    label:"平原・好農計畫", at:[300,360]},
+  {id:"culture", label:"文化立縣 2.0",   at:[130,282]},
+  {id:"ocean",   label:"海・海洋新宜蘭", at:[880,304]},
+  {id:"tour",    label:"觀光立縣 2.0",   at:[680,64]}
+];
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-let land = {mode:"lin", zone:"all", sel:"forest"};
+let land = {mode:"lin", sel:"forest", planted:0};
+const byId = id => DATA.find(d=>d.id===id);
 
 function rnd(seed){ return () => (seed = (seed*16807) % 2147483647) / 2147483647; }
-function buildTrees(){
-  const r = rnd(42), g = $("#trees"), t = totals();
-  const total = 70, keep = Math.round(total * t.wuN / t.linN);
-  let html = "";
-  for(let i=0;i<total;i++){
-    // 山坡與平原邊緣隨機種樹，避開海
-    const x = 10 + r()*660, base = x<700 ? 250 + (x>350?10:0) : 270;
-    const y = base + r()*(i%3===0 ? 140 : 40);
-    const s = 7 + r()*7;
-    html += `<path class="tree" data-k="${i<keep?1:0}" fill="var(--tree)" d="M${x.toFixed(1)},${(y-s*2.2).toFixed(1)} L${(x+s).toFixed(1)},${y.toFixed(1)} L${(x-s).toFixed(1)},${y.toFixed(1)} Z"/>`;
+function nearTop(x){
+  const P = [[-40,280],[0,262],[140,215],[230,240],[290,232],[470,246],[700,268],[760,280]];
+  for(let i=1;i<P.length;i++) if(x<=P[i][0]){ const [x0,y0]=P[i-1],[x1,y1]=P[i]; return y0+(y1-y0)*(x-x0)/(x1-x0); }
+  return 280;
+}
+function treePath(x, y, s){
+  return `M${x.toFixed(1)},${(y-s*2.3).toFixed(1)} L${(x+s).toFixed(1)},${y.toFixed(1)} L${(x-s).toFixed(1)},${y.toFixed(1)} Z`;
+}
+function treeSpot(r){
+  const x = 10 + r()*680, top = nearTop(x) + 14;
+  return [x, top + r()*Math.max(4, 286-top), 6 + r()*7];
+}
+function buildScene(){
+  const r = rnd(42); let html = "";
+  for(let i=0;i<90;i++){ const [x,y,s] = treeSpot(r); html += `<path class="tree" data-k="${i<12?1:0}" fill="var(--tree)" d="${treePath(x,y,s)}"/>`; }
+  $("#trees").innerHTML = html;
+
+  let pad = "";
+  for(let j=0;j<4;j++) for(let i=0;i<7;i++){
+    const x = 14 + i*72 + j*10, y = 372 + j*22;
+    pad += `<rect class="paddy ${(i+j)%2?"alt":""}" x="${x}" y="${y}" width="64" height="17" rx="3"/><path class="rice" d="M${x+4},${y+8.5}h56"/>`;
   }
-  g.innerHTML = html;
+  $("#paddies").innerHTML = pad;
+
   const st = rnd(7); let sh = "";
   for(let i=0;i<40;i++) sh += `<circle cx="${(st()*1000).toFixed(0)}" cy="${(st()*150).toFixed(0)}" r="${(st()*1.4+.4).toFixed(1)}"/>`;
   $("#stars").innerHTML = sh;
 }
-function buildPins(){
-  $("#pins").innerHTML = DATA.map(c=>{
-    const [x,y] = SPOTS[c.id];
-    return `<g class="pin" tabindex="0" role="button" data-id="${c.id}" transform="translate(${x},${y})" aria-label="${c.name}">
-      <circle class="halo" r="22"/><circle class="dotp" r="11"/><text y="-17">${c.name}</text></g>`;
+function plant(n){
+  const g = $("#trees");
+  for(let i=0;i<n;i++){
+    const [x,y,s] = treeSpot(Math.random);
+    const p = document.createElementNS("http://www.w3.org/2000/svg","path");
+    p.setAttribute("class","tree gone"); p.setAttribute("fill","var(--tree)"); p.dataset.k = "0";
+    p.setAttribute("d", treePath(x,y,s));
+    g.appendChild(p);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>p.classList.remove("gone")));
+  }
+  land.planted += n;
+  const all = g.querySelectorAll(".tree");
+  if(all.length > 260) for(let i=90;i<all.length-170;i++) all[i].remove();
+}
+function renderPills(){
+  const w = $("#scene").clientWidth || 1000;
+  const fs = 14 * Math.min(Math.max(1000/w*0.62, 1), 2.4);
+  $("#pills").innerHTML = LAND.map(l=>{
+    const c = byId(l.id), isVoid = land.mode==="wu" && !c.wu;
+    const text = isVoid ? l.label.replace(/^.*・/,"") + "：沒有提出" : l.label;
+    const bw = text.length*fs*1.05 + fs*1.6, bh = fs*1.9;
+    return `<g class="pill ${isVoid?"void":""} ${l.id===land.sel?"sel":""}" transform="translate(${l.at[0]},${l.at[1]})" pointer-events="none">
+      <rect x="${-bw/2}" y="${-bh/2}" width="${bw}" height="${bh}" rx="${bh/2}"/>
+      <text y="${fs*0.36}" font-size="${fs}">${text}</text></g>`;
   }).join("");
 }
 function paintLand(){
   const scene = $("#scene");
   scene.classList.toggle("wu", land.mode==="wu");
   document.querySelectorAll(".seg-b").forEach(b=>b.setAttribute("aria-pressed", b.dataset.mode===land.mode));
-  document.querySelectorAll(".zone-b").forEach(b=>b.setAttribute("aria-pressed", b.dataset.zone===land.zone));
   document.querySelectorAll("#trees .tree").forEach(tr=>tr.classList.toggle("gone", land.mode==="wu" && tr.dataset.k==="0"));
-  document.querySelectorAll(".pin").forEach(p=>{
-    const c = DATA.find(d=>d.id===p.dataset.id);
-    const dot = p.querySelector(".dotp");
-    dot.style.fill = land.mode==="lin" ? "var(--lin)" : "var(--wu-blue)";
-    p.classList.toggle("void", land.mode==="wu" && !c.wu);
-    p.classList.toggle("dim", land.zone!=="all" && SPOTS[c.id][2]!==land.zone);
-    p.classList.toggle("sel", c.id===land.sel);
+  document.querySelectorAll("#land .hot").forEach(h=>{
+    const c = byId(h.dataset.id);
+    h.classList.toggle("void", land.mode==="wu" && !c.wu);
+    h.classList.toggle("sel", h.dataset.id===land.sel);
   });
+  $("#spots").innerHTML = LAND.map(l=>{
+    const c = byId(l.id), isVoid = land.mode==="wu" && !c.wu;
+    return `<button type="button" class="spot ${isVoid?"void":""}" data-id="${l.id}" aria-pressed="${l.id===land.sel}">${icon(l.id)}${l.label}${isVoid?"（沒有提出）":""}</button>`;
+  }).join("");
+  renderPills();
   renderInfo();
 }
 function renderInfo(){
-  const c = DATA.find(d=>d.id===land.sel), t = totals();
-  const zoneName = {mtn:"山",river:"溪",plain:"平原",sea:"海"}[SPOTS[c.id][2]];
+  const c = byId(land.sel), l = LAND.find(x=>x.id===land.sel);
   const lead = land.mode==="lin"
-    ? `林國漳的宜蘭：${t.cats} 個領域都有政見，山、溪、平原、海一個都沒漏。`
-    : `吳宗憲的宜蘭：${t.none} 個領域是空白的，樹少了、溪也細了。`;
+    ? "林國漳的宜蘭：山有百萬植樹、水有勁水大縣章、平原有品牌好農、海有藍色經濟，觀光與文化一起升級。"
+    : "吳宗憲的宜蘭：森林、治水、海洋、文化都沒有政見，樹少了，溪水也不再清澈。";
+  const plantLine = c.id==="forest" && land.mode==="lin"
+    ? `<p class="plant">點一下山上的森林，幫宜蘭種樹${land.planted?`：你已經種下 ${land.planted} 棵`:""}</p>` : "";
   $("#landInfo").innerHTML = `
-    <div><p style="color:var(--muted);font-size:13px">${lead}</p><h3>${zoneName}・${c.name}</h3></div>
-    <div class="vsline"><span>林國漳 <b class="l">${c.lin.length} 項</b></span>
-      <span>吳宗憲 ${c.wu?`<b class="w">${c.wu.length} 項</b>`:`<b class="x">沒有提出</b>`}</span>
-      <span style="color:var(--muted)">${esc(c.lin[0][0])}、${esc(c.lin[1][0])}…</span></div>
+    <span class="ill">${icon(c.id)}</span>
+    <p class="lead">${lead}</p>
+    <h3>${esc(l.label)}｜${esc(c.tag)}</h3>
+    <div class="vsline"><span>林國漳 <b class="l">${c.lin.length} 項</b>：${c.lin.slice(0,3).map(i=>esc(i[0])).join("、")}</span>
+      <span>吳宗憲 ${c.wu?`<b class="w">${c.wu.length} 項</b>`:`<b class="x">沒有提出</b>`}</span></div>
+    ${plantLine}
     <button type="button" class="go" data-go="${c.id}">看完整對照</button>`;
 }
 function goTo(id){
@@ -765,27 +917,32 @@ function goTo(id){
   const el = document.getElementById("c-"+id);
   if(el){ el.classList.remove("collapsed"); el.scrollIntoView({behavior: reduce ? "auto":"smooth"}); }
 }
-$("#pins").addEventListener("click", e=>{ const p = e.target.closest(".pin"); if(p){ land.sel = p.dataset.id; paintLand(); } });
-$("#pins").addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ const p = e.target.closest(".pin"); if(p){ e.preventDefault(); land.sel = p.dataset.id; paintLand(); } } });
+function pick(id){
+  land.sel = id;
+  if(id==="forest" && land.mode==="lin") plant(4);
+  paintLand();
+}
+$("#land").addEventListener("click", e=>{ const h = e.target.closest(".hot"); if(h) pick(h.dataset.id); });
+$("#land").addEventListener("keydown", e=>{
+  if(e.key!=="Enter" && e.key!==" ") return;
+  const h = e.target.closest(".hot"); if(h){ e.preventDefault(); pick(h.dataset.id); }
+});
+$("#spots").addEventListener("click", e=>{ const b = e.target.closest("[data-id]"); if(b){ land.sel = b.dataset.id; paintLand(); } });
 $("#landInfo").addEventListener("click", e=>{ const b = e.target.closest("[data-go]"); if(b) goTo(b.dataset.go); });
 document.querySelector(".seg").addEventListener("click", e=>{ const b = e.target.closest("[data-mode]"); if(b){ land.mode = b.dataset.mode; paintLand(); } });
-document.querySelector(".zones").addEventListener("click", e=>{
-  const b = e.target.closest("[data-zone]"); if(!b) return;
-  land.zone = b.dataset.zone;
-  if(land.zone!=="all" && SPOTS[land.sel][2]!==land.zone) land.sel = DATA.find(c=>SPOTS[c.id][2]===land.zone).id;
-  paintLand();
-});
+window.addEventListener("resize", renderPills);
 if(!reduce){
   $("#scene").addEventListener("pointermove", e=>{
     const r = e.currentTarget.getBoundingClientRect();
     const dx = (e.clientX - r.left)/r.width - .5, dy = (e.clientY - r.top)/r.height - .5;
     $("#lyFar").style.transform = `translate(${dx*-10}px,${dy*-4}px)`;
-    $("#lyNear").style.transform = `translate(${dx*-20}px,${dy*-6}px)`;
+    $("#lyNear").style.transform = `translate(${dx*-18}px,${dy*-6}px)`;
+    $("#lyBalloon").style.transform = `translate(${dx*14}px,${dy*8}px)`;
     $("#sun").style.transform = `translate(${dx*-4}px,${dy*-3}px)`;
   });
-  $("#scene").addEventListener("pointerleave", ()=>{ ["#lyFar","#lyNear","#sun"].forEach(s=>$(s).style.transform=""); });
+  $("#scene").addEventListener("pointerleave", ()=>{ ["#lyFar","#lyNear","#lyBalloon","#sun"].forEach(s=>$(s).style.transform=""); });
 }
-buildTrees(); buildPins(); paintLand();
+buildScene(); paintLand();
 
 renderScore(); renderMap(); renderChips(); renderCards();
 </script>
