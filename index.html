@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="以林國漳的政見類別為基準，逐類對照吳宗憲的宜蘭縣政政見。">
+<meta property="og:title" content="宜蘭縣長政見對照">
+<meta property="og:description" content="同一個宜蘭，兩份政見。逐類比較林國漳與吳宗憲的宜蘭縣政政見。">
+<title>宜蘭縣長政見對照</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap">
+<style>
+/* Layout: 計分板開場 → 18 格涵蓋地圖 → 篩選列 → 每類一張左右對照卡（林左、吳右），點開看細項 */
+:root{
+  --bg:#f3f1e8;
+  --paper:#fffdf6;
+  --ink:#1f2a22;
+  --muted:#5f6b5f;
+  --line:#dcd8c8;
+  --lin:#1f6b45;        /* 森林綠 */
+  --lin-deep:#0f3d2a;   /* 深綠 */
+  --lin-soft:#e3efe2;
+  --brown:#7a5232;      /* 土地棕 */
+  --orange:#d9701f;     /* 稻穗橘 */
+  --orange-soft:#fbe9d6;
+  --wu-red:#c3313c;
+  --wu-blue:#1f4e9c;
+  --wu-soft:#eef0f6;
+  --empty:#ece9df;
+  /* 山水地景 */
+  --sky1:#bfe0ea;--sky2:#f4ecd6;--sun:#f3b45a;--star:transparent;
+  --mtn-far:#7f9d8c;--mtn-near:#3f7655;--plain:#9cc27a;--tree:#2d6a45;
+  --sea1:#4f9ab8;--sea2:#1f5d82;--wave:#e9f5f8;--river:#5aa7c9;
+  --font-display:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --font-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111a14;--paper:#18241c;--ink:#e9eee6;--muted:#a4b0a4;--line:#2d3b31;
+  --lin:#4fb37c;--lin-deep:#9fdcb7;--lin-soft:#1d3527;--brown:#c99a6e;--orange:#f0994c;--orange-soft:#3a2a1a;
+  --wu-red:#ec6b73;--wu-blue:#7ea4ea;--wu-soft:#1f2433;--empty:#222d25;
+  --sky1:#0b1a2b;--sky2:#203a45;--sun:#f1e6b8;--star:#f4f1dc;
+  --mtn-far:#2c4a43;--mtn-near:#1d3a2b;--plain:#3c5e34;--tree:#1b4a2e;
+  --sea1:#173e57;--sea2:#0b2536;--wave:#7fb2c7;--river:#3f86a8;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111a14;--paper:#18241c;--ink:#e9eee6;--muted:#a4b0a4;--line:#2d3b31;
+  --lin:#4fb37c;--lin-deep:#9fdcb7;--lin-soft:#1d3527;--brown:#c99a6e;--orange:#f0994c;--orange-soft:#3a2a1a;
+  --wu-red:#ec6b73;--wu-blue:#7ea4ea;--wu-soft:#1f2433;--empty:#222d25;
+  --sky1:#0b1a2b;--sky2:#203a45;--sun:#f1e6b8;--star:#f4f1dc;
+  --mtn-far:#2c4a43;--mtn-near:#1d3a2b;--plain:#3c5e34;--tree:#1b4a2e;
+  --sea1:#173e57;--sea2:#0b2536;--wave:#7fb2c7;--river:#3f86a8;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1080px;margin:0 auto}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;line-height:1.25}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px;border-radius:6px}
+
+/* hero */
+.hero{padding-block:40px 28px;display:grid;gap:20px}
+.eyebrow{font-size:13px;letter-spacing:.18em;color:var(--brown);font-weight:700}
+.hero h1{font-size:clamp(30px,6vw,54px);font-weight:900;color:var(--lin-deep)}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.lede{max-width:62ch;color:var(--muted);margin:0}
+
+.score{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch;margin-top:8px}
+.side{border-radius:16px;padding:20px;display:grid;gap:6px;min-width:0}
+.side.lin{background:linear-gradient(135deg,var(--lin-deep),var(--lin));color:#fff}
+.side.wu{background:var(--paper);border:1px solid var(--line)}
+.side .who{font-weight:700;font-size:15px;letter-spacing:.06em}
+.side.wu .who{color:var(--wu-blue)}
+.side .big{font-family:var(--font-display);font-size:clamp(36px,7vw,60px);font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
+.side.wu .big{color:var(--wu-red)}
+.side .sub{font-size:14px;opacity:.9}
+.vs{align-self:center;font-family:var(--font-display);font-weight:900;font-size:22px;color:var(--brown)}
+.side .big small{font-family:var(--font-body);font-size:16px;font-weight:700;opacity:.85}
+.side.wu .sub b{color:var(--wu-red);font-size:18px}
+.verdict{margin:0;font-size:17px}
+.verdict b{color:var(--lin);font-family:var(--font-display);font-size:20px}
+
+/* 對打長條：林往左長、吳往右長，中間是類別名 */
+section.block{margin-top:36px}
+.block-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:14px}
+.block-head h2{font-size:24px;color:var(--lin-deep)}
+.block-head p{margin:0;color:var(--muted);font-size:14px}
+.duel-head,.drow{display:grid;grid-template-columns:1fr 6.5em 1fr;gap:10px;align-items:center}
+.duel-head{font-weight:900;font-size:15px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+.duel-head .l{color:var(--lin);text-align:right}
+.duel-head .r{color:var(--wu-blue)}
+.duel{display:grid}
+.drow{border:0;background:none;width:100%;padding:7px 0;border-bottom:1px solid var(--line);cursor:pointer;text-align:left}
+.drow:hover{background:var(--lin-soft)}
+.drow .cat{text-align:center;font-weight:700;font-size:15px}
+.bar-l,.bar-r{display:flex;align-items:center;gap:8px;min-width:0}
+.bar-l{justify-content:flex-end}
+.bar-l i,.bar-r i{display:block;height:18px;border-radius:5px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.bar-l i{background:linear-gradient(270deg,var(--lin),var(--lin-deep));border-radius:5px 2px 2px 5px}
+.bar-r i{background:linear-gradient(90deg,var(--wu-blue),var(--wu-red));border-radius:2px 5px 5px 2px}
+.bar-l b,.bar-r b{font-variant-numeric:tabular-nums;font-size:14px;flex:none}
+.bar-l b{color:var(--lin)}
+.bar-r b{color:var(--wu-blue)}
+.bar-r .nil{font-size:13px;font-weight:700;color:var(--wu-red);border:1.5px dashed var(--wu-red);border-radius:6px;padding:0 8px;line-height:22px}
+.drow .crown{color:var(--orange);font-size:12px;font-weight:900;margin-left:2px}
+
+/* 山水地景 */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;padding:3px;background:var(--paper)}
+.seg-b{border:0;background:none;border-radius:99px;padding:6px 14px;font-size:14px;font-weight:700;cursor:pointer;color:var(--muted)}
+.seg-b[data-mode="lin"][aria-pressed="true"]{background:var(--lin);color:#fff}
+.seg-b[data-mode="wu"][aria-pressed="true"]{background:linear-gradient(90deg,var(--wu-blue),var(--wu-red));color:#fff}
+.scene{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);aspect-ratio:1000/440;max-width:100%;touch-action:pan-y}
+.scene svg{display:block;width:100%;height:100%}
+.ly{transition:transform .25s ease-out}
+.scene .veg{transition:filter .8s}
+.scene.wu #lyNear,.scene.wu #plain,.scene.wu #trees{filter:saturate(.25) brightness(.92)}
+.river{fill:none;stroke:var(--river);stroke-width:7;stroke-linecap:round;transition:stroke-width .8s,opacity .8s}
+.river-flow{fill:none;stroke:var(--wave);stroke-width:2;stroke-dasharray:6 18;stroke-linecap:round;opacity:.8;animation:flow 2.4s linear infinite}
+.scene.wu .river{stroke-width:3;opacity:.55}
+.scene.wu .river-flow{opacity:.2}
+@keyframes flow{to{stroke-dashoffset:-48}}
+.waves path{fill:none;stroke:var(--wave);stroke-width:2;stroke-linecap:round;opacity:.6;animation:wave 5s ease-in-out infinite alternate}
+.waves path:nth-child(2){animation-delay:-1.5s}.waves path:nth-child(3){animation-delay:-3s}
+@keyframes wave{to{transform:translateX(-18px)}}
+#stars circle{fill:var(--star)}
+.tree{transform-box:fill-box;transform-origin:50% 100%;transition:transform .6s cubic-bezier(.3,1.4,.5,1),opacity .6s}
+.tree.gone{transform:scale(0);opacity:0}
+.pin{cursor:pointer;transition:opacity .3s}
+.pin .halo{fill:var(--orange);opacity:0;transition:opacity .2s}
+.pin:hover .halo,.pin.sel .halo,.pin:focus-visible .halo{opacity:.35}
+.pin .dotp{stroke:#fff;stroke-width:2.5;transition:fill .5s}
+.pin text{font-size:13px;font-weight:700;fill:#fff;paint-order:stroke;stroke:rgba(0,0,0,.55);stroke-width:3px;text-anchor:middle;pointer-events:none}
+.pin.void .dotp{fill:transparent!important;stroke:var(--wu-red);stroke-dasharray:4 3}
+.pin.dim{opacity:.25}
+.pin:focus{outline:none}
+.zones{position:absolute;left:10px;top:10px;display:flex;gap:4px;flex-wrap:wrap}
+.zone-b{border:0;border-radius:99px;padding:4px 12px;font-size:13px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.85);color:#1f2a22}
+.zone-b[aria-pressed="true"]{background:var(--orange);color:#fff}
+.land-info{margin-top:12px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 18px;display:grid;grid-template-columns:1fr auto;gap:6px 16px;align-items:center}
+.land-info h3{font-size:20px;color:var(--lin-deep)}
+.land-info p{margin:0;font-size:15px}
+.land-info .vsline{grid-column:1/2;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:15px}
+.land-info .vsline b.l{color:var(--lin)}
+.land-info .vsline b.w{color:var(--wu-blue)}
+.land-info .vsline b.x{color:var(--wu-red)}
+.land-info .go{grid-row:1/3;grid-column:2;border:0;border-radius:10px;background:var(--lin);color:#fff;font-weight:700;padding:9px 14px;cursor:pointer;white-space:nowrap}
+@media (max-width:720px){
+  .pin text{display:none}
+  .pin .dotp{r:20}
+  .pin .halo{r:32}
+  .land-info{grid-template-columns:1fr}
+  .land-info .go{grid-row:auto;grid-column:auto;justify-self:start}
+}
+@media (prefers-reduced-motion:reduce){.river-flow,.waves path{animation:none}}
+
+/* controls */
+.controls{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px;display:grid;gap:10px;border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+.chip{flex:none;border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:5px 14px;font-size:14px;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--lin);border-color:var(--lin);color:#fff}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.search{flex:1 1 220px;min-width:0;border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:8px 12px;font:inherit;color:var(--ink)}
+.toggle{display:inline-flex;gap:8px;align-items:center;font-size:14px;cursor:pointer;user-select:none}
+.toggle input{accent-color:var(--orange);width:18px;height:18px}
+.btn{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:7px 12px;font-size:14px;cursor:pointer}
+.count{font-size:13px;color:var(--muted)}
+
+/* cards */
+.cards{display:grid;gap:16px;margin-top:18px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;scroll-margin-top:140px}
+.card-top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}
+.card-top h3{font-size:22px;color:var(--lin-deep)}
+.card-top .tag{font-size:12px;color:var(--brown);letter-spacing:.1em;font-weight:700}
+.win{display:inline-flex;align-items:center;gap:6px;background:var(--orange-soft);color:var(--orange);font-weight:900;border-radius:99px;padding:4px 12px;font-size:14px}
+.win svg{width:16px;height:16px}
+.cols{display:grid;grid-template-columns:1.25fr 1fr}
+.col{padding:16px 20px;min-width:0;display:grid;gap:10px;align-content:start}
+.col.lin{background:var(--lin-soft)}
+.col.wu{background:var(--wu-soft)}
+.col-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.col-h b{font-size:15px}
+.col.lin .col-h b{color:var(--lin)}
+.col.wu .col-h b{color:var(--wu-blue)}
+.col-h span{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+ul.items{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+ul.items li{display:grid;gap:2px;padding-left:16px;position:relative}
+ul.items li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:2px}
+.col.lin li::before{background:var(--lin)}
+.col.wu li::before{background:var(--wu-red)}
+ul.items .n{font-weight:700;line-height:1.5}
+ul.items .d{font-size:14px;color:var(--muted);line-height:1.6}
+.card.collapsed ul.items .d{display:none}
+.card.collapsed ul.items li.extra{display:none}
+.none{border:2px dashed var(--wu-red);border-radius:12px;padding:14px;text-align:center;color:var(--wu-red);font-weight:700;display:grid;gap:4px}
+.none small{font-weight:400;color:var(--muted);font-size:13px}
+.why{padding:14px 20px;border-top:1px solid var(--line);display:flex;gap:12px;align-items:flex-start;background:var(--paper)}
+.why .lbl{flex:none;font-size:12px;font-weight:900;letter-spacing:.12em;color:#fff;background:var(--brown);border-radius:6px;padding:2px 8px;margin-top:3px}
+.why p{margin:0;max-width:75ch}
+.more{border:0;background:none;color:var(--lin);font-weight:700;cursor:pointer;padding:0;justify-self:start;font-size:14px}
+.empty-state{padding:40px;text-align:center;color:var(--muted)}
+
+footer{margin-top:40px;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;display:grid;gap:6px}
+
+@media (max-width:720px){
+  .cols{grid-template-columns:1fr}
+  .score{grid-template-columns:1fr}
+  .vs{justify-self:center}
+  .duel-head,.drow{grid-template-columns:1fr 4.8em 1fr;gap:6px}
+  .drow .cat{font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">2026 宜蘭縣長選舉 · 政見對照</div>
+    <h1>同一個宜蘭，<em>兩份政見</em></h1>
+    <p class="lede">以林國漳提出的每一個政見類別為基準，逐類對照吳宗憲有沒有提出相對應的宜蘭縣政主張。看看哪一份更全面、更照顧每一個宜蘭人。</p>
+
+    <div class="score" aria-label="比較總結">
+      <div class="side lin">
+        <div class="who">林國漳</div>
+        <div class="big"><span id="sLinN">0</span><small> 項政見</small></div>
+        <div class="sub"><span id="sCats">0</span> 個類別都有完整主張</div>
+      </div>
+      <div class="vs">VS</div>
+      <div class="side wu">
+        <div class="who">吳宗憲</div>
+        <div class="big"><span id="sWuN">0</span><small> 項政見</small></div>
+        <div class="sub"><b id="sWuNone">0</b> 個類別完全沒有提出</div>
+      </div>
+    </div>
+    <p class="verdict">逐類比較結果：<b>林國漳 <span id="sWins">0</span> 勝</b>，吳宗憲 0 勝。</p>
+  </header>
+
+  <section class="block land" aria-labelledby="landH">
+    <div class="block-head">
+      <h2 id="landH">把政見放回宜蘭山水</h2>
+      <div class="seg" role="group" aria-label="切換候選人">
+        <button type="button" class="seg-b" data-mode="lin" aria-pressed="true">林國漳的宜蘭</button>
+        <button type="button" class="seg-b" data-mode="wu" aria-pressed="false">吳宗憲的宜蘭</button>
+      </div>
+    </div>
+    <div class="scene" id="scene">
+      <svg viewBox="0 0 1000 440" id="land" role="img" aria-labelledby="landDesc" preserveAspectRatio="xMidYMid slice">
+        <title id="landDesc">宜蘭山水示意圖：左側雪山山脈，中間蘭陽平原與蘭陽溪，右側太平洋與龜山島，各政見類別標示在對應地景上</title>
+        <defs>
+          <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--sky1)"/><stop offset="1" stop-color="var(--sky2)"/></linearGradient>
+          <linearGradient id="gSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--sea1)"/><stop offset="1" stop-color="var(--sea2)"/></linearGradient>
+        </defs>
+        <rect width="1000" height="440" fill="url(#gSky)"/>
+        <g id="stars"></g>
+        <circle id="sun" cx="860" cy="80" r="26" fill="var(--sun)"/>
+        <g id="lyFar" class="ly"><path fill="var(--mtn-far)" d="M-40,250 L40,170 L95,200 L190,92 L240,140 L270,128 L330,175 L390,140 L450,190 L520,165 L600,215 L690,220 L760,262 L-40,262 Z"/></g>
+        <g id="lyNear" class="ly"><path fill="var(--mtn-near)" d="M-40,290 C40,230 90,250 140,215 C190,185 230,240 290,232 C350,222 400,250 470,246 C540,242 600,262 700,268 L760,280 L-40,300 Z"/></g>
+        <path fill="url(#gSea)" d="M690,262 L1000,250 L1000,440 L820,440 C790,380 760,320 690,262 Z"/>
+        <g id="waves" class="waves">
+          <path d="M760,300 q15,-6 30,0 t30,0 t30,0" /><path d="M860,350 q15,-6 30,0 t30,0 t30,0"/><path d="M800,400 q15,-6 30,0 t30,0 t30,0 t30,0"/><path d="M900,280 q12,-5 24,0 t24,0"/>
+        </g>
+        <path id="turtle" fill="var(--mtn-near)" d="M842,262 Q858,246 874,248 Q884,222 896,240 Q915,246 938,262 Z"/>
+        <path id="plain" fill="var(--plain)" d="M-40,285 C150,270 400,262 700,268 C760,320 790,380 820,440 L-40,440 Z"/>
+        <g id="trees"></g>
+        <path id="river" class="river" d="M230,262 C260,300 330,290 360,320 C390,350 470,330 520,312 C590,288 640,330 700,318 C730,312 750,300 772,312"/>
+        <path id="riverFlow" class="river-flow" d="M230,262 C260,300 330,290 360,320 C390,350 470,330 520,312 C590,288 640,330 700,318 C730,312 750,300 772,312"/>
+        <g id="pins"></g>
+      </svg>
+      <div class="zones" role="group" aria-label="地景分區">
+        <button type="button" class="zone-b" data-zone="all" aria-pressed="true">全部</button>
+        <button type="button" class="zone-b" data-zone="mtn" aria-pressed="false">山</button>
+        <button type="button" class="zone-b" data-zone="river" aria-pressed="false">溪</button>
+        <button type="button" class="zone-b" data-zone="plain" aria-pressed="false">平原</button>
+        <button type="button" class="zone-b" data-zone="sea" aria-pressed="false">海</button>
+      </div>
+    </div>
+    <div class="land-info" id="landInfo" aria-live="polite"></div>
+  </section>
+
+  <section class="block" aria-labelledby="mapH">
+    <div class="block-head">
+      <h2 id="mapH">各類別政見數量</h2>
+      <p>長條越長代表政見越多，點任一列看詳細對照</p>
+    </div>
+    <div class="duel-head" aria-hidden="true"><span class="l">林國漳</span><span></span><span class="r">吳宗憲</span></div>
+    <div class="duel" id="map"></div>
+  </section>
+
+  <section class="block" aria-labelledby="listH">
+    <div class="block-head">
+      <h2 id="listH">逐類對照</h2>
+      <p>點類別篩選，或搜尋關鍵字</p>
+    </div>
+    <div class="controls">
+      <div class="chips" id="chips" role="toolbar" aria-label="類別篩選"></div>
+      <div class="row">
+        <input class="search" id="q" type="search" placeholder="搜尋政見，例如：托育、敬老卡、步道" aria-label="搜尋政見">
+        <label class="toggle"><input type="checkbox" id="onlyNone"> 只看吳宗憲未提出的</label>
+        <button class="btn" id="expandAll" type="button">全部展開</button>
+        <span class="count" id="count"></span>
+      </div>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <footer>
+    <div>林國漳政見依其競選團隊公布之政見內容整理。吳宗憲政見依其競選官網、臉書貼文及 2026 年選戰期間新聞報導整理，僅列宜蘭縣政相關主張，不含立法院任內事項。</div>
+    <div>「未提出」指截至整理時，公開資料中未見該類別的具體宜蘭縣政政見。</div>
+  </footer>
+</div>
+
+<script>
+const DATA = [
+  {id:"agri", name:"農業", tag:"安心健康・宜蘭品牌好農計畫",
+   lin:[
+    ["首次投保農業保險補助 95%","農業保險與天然災害救助雙軌保障，首次加入農保的農戶保費補助由 83% 提高到 95%，應對氣候變遷。"],
+    ["有機倍增、農藥減半","有機農業面積由約 890 公頃倍增到 2,000 公頃，占全縣可耕地 8.6%，同步推動農藥使用減半。"],
+    ["宜蘭品牌走向國際","運用台灣與 8 國的有機同等協議，把有機米、濕地米、有機茶、金柑、銀柳等戰略作物推向國際市場。"],
+    ["學校有機營養午餐","把在地有機農產品送進校園，讓孩子吃得健康，也讓農民有穩定通路。"],
+    ["農漁業產銷環境改善","溫網室、冷鏈、農路、灌排設施、漁港整修與養殖區產銷設施全面升級。"]
+   ],
+   wu:[
+    ["公共採購支持在地農業","以公共採購支持五結花生等在地農產品牌。"],
+    ["長青食堂採用宜蘭農產","長青食堂朝中央廚房模式發展，優先採用宜蘭農產品。"],
+    ["農業 +1「宜」線","倡議串聯雲嘉南高屏成立農業策略聯盟。"]
+   ],
+   why:"林國漳從農民保險、友善生產、品牌行銷到產銷設施，照顧到農業整條產業鏈；吳宗憲只談採購與跨縣市聯盟，對農民最在意的天災風險與收益保障沒有著墨。"},
+
+  {id:"welfare", name:"社會福利", tag:"關心弱勢・全方位社會福利",
+   lin:[
+    ["生育津貼每胎 3 萬元","每一胎補助提高到 3 萬元，減輕新手爸媽負擔。"],
+    ["0–6 歲掛號費補助","一般門診補助 100 元、急診 200 元，每人每年最多 10 次。"],
+    ["吃飯讀冊免錢延續升級","延續營養午餐與書籍費補助，並補助學校更新保溫箱、加熱櫃，讓午餐熱騰騰。"],
+    ["帶狀皰疹疫苗補助","低收、中低收與 55 歲以上原住民全額補助，設籍 65 歲以上長者補助 3,000 元。"],
+    ["弱勢健保全額免費","補足中低收、中度與輕度身障者的健保費缺口，55 歲以上原住民全額補助。"],
+    ["宜蘭新美力","新住民子女國小到大專助學金，以及新住民二代「語言文化溯根」提案補助。"]
+   ],
+   wu:[
+    ["國小課後照顧免費","延長到晚上 7 點，寒暑假也開班。"],
+    ["營養午餐加碼、周周喝鮮乳","每餐補助由 60 元提高到 65 元，國中小學生每週喝鮮乳。"],
+    ["高中職讀書免錢","補助高中職學生書籍相關費用。"],
+    ["鄰長福利","鄰長交通費、團體意外險、自強活動費與喪葬慰問金。"]
+   ],
+   why:"林國漳的社福把資源精準送到最需要的人：低收、身障、原住民、新住民與新生兒家庭都有專屬照顧；吳宗憲偏向普發加碼，對身障者與新住民家庭沒有提出專屬照顧政策。"},
+
+  {id:"elder", name:"長者照顧", tag:"智慧敬老卡",
+   lin:[
+    ["智慧敬老卡每年 12,000 點","65 歲以上每月 1,000 點，當月用不完可跨月累積，年底才歸零。"],
+    ["交通、醫療、在地店家都能用","計程車、國道客運、台鐵、縣內公車，研議折抵診所掛號費，並與超商、社區藥局合作折抵。"],
+    ["限定宜蘭在地消費","點數在宜蘭在地店家使用，照顧長輩的同時帶動地方商圈。"],
+    ["票證系統一次升級","趁建置敬老卡升級底層系統，終結 TPASS 宜蘭、雙北兩張卡的不便，未來串接 YouBike 與各項公共服務。"],
+    ["長者帶狀皰疹疫苗補助","65 歲以上補助 3,000 元，弱勢長者全額補助。"]
+   ],
+   wu:[
+    ["敬老卡每年 7,200 點","每年 7,200 點敬老卡。"],
+    ["65 歲以上免健保費","免繳健保費門檻下調到 65 歲。"],
+    ["重陽敬老金擴大到 65 歲","依年齡分級發放重陽敬老金。"],
+    ["一社區一長青食堂","每個社區設置長青食堂。"]
+   ],
+   why:"林國漳的敬老卡一年 12,000 點，比吳宗憲的 7,200 點多出近七成，還能跨月累積、跨交通醫療消費使用，錢留在宜蘭商家。吳宗憲的免健保是齊頭式補助，低收與重度身障長者原本就免繳，加碼給不到最需要的人。"},
+
+  {id:"women", name:"婦女與托育", tag:"女力新宜蘭・幸福不缺席",
+   lin:[
+    ["凍卵補助","25 至 39 歲女性終身一次 3 萬元凍卵（含保存費）補助，守護生育自主。"],
+    ["孕婦高風險篩檢免費","懷孕 12 週內免費做一次 SMA 脊髓性肌肉萎縮症或子癲前症篩檢。"],
+    ["增加女性入閣","縣府內閣增加女性首長，讓女性觀點進入決策核心。"],
+    ["托育空間倍增","盤點閒置公共空間廣設社區托育據點，新建社宅強制設置公設民營托嬰中心。"],
+    ["支持保母與教保員","鼓勵保母準公共化、補助專業責任保險、提高教保員薪資待遇。"],
+    ["12 鄉鎮市親子館假日臨托","假日臨托由 2 處擴大到全縣 12 鄉鎮市，並延長到晚上 9 點。"]
+   ],
+   wu:[
+    ["育嬰留停全薪 2.0","縣府補足育嬰留停津貼剩下的 2 成，前 6 個月領全薪。"],
+    ["托育零月費","公私立托育扣除中央補助後的月費由縣府負擔。"],
+    ["一鄉鎮一公托","每個鄉鎮設置公共托育機構。"],
+    ["安心托育站","運用親子館等場地提供夜托與假日托育。"]
+   ],
+   why:"林國漳照顧的是女性本身：生育自主、孕期健康、決策平權都有具體做法，托育也從空間、社宅、保母與教保員待遇一起補足供給。吳宗憲的政見幾乎只把女性放在育兒角色裡，對女性健康與決策平權沒有提出具體做法。"},
+
+  {id:"forest", name:"森林城鄉", tag:"宜蘭青天計畫",
+   lin:[
+    ["韌性綠網","整合高山、平原到沿海：禁伐補貼、獎勵造林、300 座社區微型森林。"],
+    ["綠政小組","縣長親自掛帥，修訂建築管理自治條例，把綠化量與原生樹種納入建築規範。"],
+    ["宜蘭森林認同卡","導入 ESG 認養制度，讓企業成為微型森林的長期後盾。"],
+    ["原生樹種生態廊道","複製三層坪、冬山河堤杜鵑花道等成功案例，每年減碳約 1,200 公噸。"]
+   ],
+   wu:null,
+   why:"面對極端氣候，林國漳提出從山到海的完整綠化與減碳計畫；吳宗憲在森林、綠化與減碳上沒有提出任何宜蘭縣政政見。"},
+
+  {id:"sport", name:"運動", tag:"宜蘭動起來・健康一輩子",
+   lin:[
+    ["銀髮活力 100 歲","社區據點增補運動器材與師資，陪長輩防跌增肌。"],
+    ["雨天也能運動","盤點全縣室內運動資源，建立預約平台，下雨天照樣運動。"],
+    ["全民運動幸福護照","運動累積健康點數，到在地店家換實質回饋。"],
+    ["宜蘭運動博覽會","體驗式活動讓孩子及早發現運動天賦。"],
+    ["未來冠軍培育","導入運動科學與防護資源，建立基層到縣隊的培訓路徑。"],
+    ["國際品牌賽事","國際三鐵、國際龍舟、國際衝浪三大賽事。"],
+    ["運動新經濟","運動觀光黃金走廊、運動產業創新基地、教練與防護員在地就業。"]
+   ],
+   wu:[
+    ["優化運動場館","讓宜蘭人運動「風雨無阻」。"],
+    ["推廣匹克球","推廣全民運動。"],
+    ["孩子優先、教育先行","重視學生運動。"]
+   ],
+   why:"林國漳的運動政策從長輩健康、孩子天賦、選手培育一路做到國際賽事與運動產業；吳宗憲只停留在場館與單一運動推廣，缺少選手培育與帶動經濟的規劃。"},
+
+  {id:"youth", name:"青年", tag:"青年宜蘭・四箭齊發",
+   lin:[
+    ["設立運動暨青年發展處","專責青年事務，落實青年提案預算，增加縣府青年主管比例。"],
+    ["創業就業加碼","青年創業獎勵每案最高 30 萬元、創業貸款、穩定就業獎勵最高 4.8 萬元。"],
+    ["TPASS 月票加碼","雙北通勤月票由 1,800 元降到 1,500 元，縣內月票由 750 元降到 500 元。"],
+    ["400 戶青年婚育宅","在縣政中心興建只租不售的青年宅、婚育宅，並設置托嬰托育中心。"],
+    ["宜蘭共創學院","結合青創、農創、文創，推動社會企業創業競賽。"],
+    ["頭城數位衝浪者中心","推動數位遊牧與辦公度假，吸引全球創意人才駐點宜蘭。"]
+   ],
+   wu:[
+    ["招商帶動青年返鄉","引進科技產業，讓北漂青年有工作可以回家。"],
+    ["TPASS+宜","提出通勤月票相關構想。"]
+   ],
+   why:"林國漳同時解決青年的工作、創業、通勤與居住，還讓青年進入縣府決策；吳宗憲主要寄望招商，沒有提出青年住宅與創業支持的具體政策。"},
+
+  {id:"kids", name:"兒童", tag:"五星童年・兒童夢土",
+   lin:[
+    ["兒童室內探索樂園","利用閒置空間在溪南、溪北各打造一處。"],
+    ["100 校教室照明體檢","全面改善教室照明，守護學童視力。"],
+    ["學校藏書量倍增","宜蘭國中小校均藏書全國第 14 名，目標倍增。"],
+    ["0–6 歲掛號費補助","減輕孩子看病負擔。"],
+    ["輪狀病毒與腸病毒疫苗補助","每劑一次性補助 2,000 元。"],
+    ["學童上下學接送","整合線上叫車平台，提供學童接送服務。"],
+    ["綠博、童玩節免費入園","設籍 12 歲以下兒童免費。"]
+   ],
+   wu:[
+    ["嬰幼兒用品消費券","0–3 歲每月 1,000 元。"],
+    ["0–18 歲成長津貼與未來帳戶","寫在政策手冊中。"],
+    ["校安四核心","義交、校園周邊交通、校安人力與 AI 防護。"]
+   ],
+   why:"林國漳替孩子打造玩的空間、讀的書、看得清楚的教室與醫療照顧，是實實在在的成長環境；吳宗憲以發放現金為主，對孩子的遊憩、閱讀與醫療沒有具體規劃。"},
+
+  {id:"hakka", name:"客家", tag:"宜蘭客家一七GO",
+   lin:[
+    ["台七線森活圈","爭取客委會客庄計畫，串聯員山、大同、三星客家聚落。"],
+    ["客底大覺醒","全台最多的 40 座三山國王廟設客底文化示範區，推動數位族譜尋根。"],
+    ["詔安腔復興","跨縣市結盟引進詔安腔師資，爭取客語認證獎勵提高到 2,000 元。"],
+    ["蘭陽客底廚房","創立 HA-FOOD 品牌，在蘇澳朝陽漁港成立交流中心。"],
+    ["AI 智能客庄","結合手遊與實境解謎帶遊客走進客庄。"]
+   ],
+   wu:null,
+   why:"宜蘭有大量隱形客家後代，林國漳提出尋根、語言、飲食到觀光的完整客家政策；吳宗憲沒有提出任何客家政見。"},
+
+  {id:"labor", name:"勞工", tag:"勞工五大行動計畫",
+   lin:[
+    ["興建勞工活動中心","整合勞工教育、職訓、會議與休憩功能。"],
+    ["採購案納入薪資評分","縣府採購把員工加薪、薪資高於基本工資 1.1 倍等納入評分，引導企業提升待遇。"],
+    ["百工百業職人獎","擴大表揚各行各業專業職人。"],
+    ["中高齡 AI 職訓","導入 AI 實務課程，提升再就業競爭力。"],
+    ["輪班與長工時勞工健檢加碼","額外補助 3,000 元健檢費用，強化職災預防。"]
+   ],
+   wu:[
+    ["勞檢突襲檢查","高風險行業不定期無預警檢查，每半年辦頭家座談會。"],
+    ["勞資爭議補助","補助訴訟期間生活費、提供義務律師，職災慰助金提高為 2 倍。"],
+    ["勞動政策諮詢委員會","勞資學三方對話。"]
+   ],
+   why:"吳宗憲的勞工政策多在出事之後補救；林國漳主動用縣府採購拉高薪資、補助健檢預防職災，還給勞工專屬空間與職涯升級，讓勞工平常就過得更好。"},
+
+  {id:"water", name:"治水與淨水", tag:"宜蘭勁水大縣章",
+   lin:[
+    ["上中下游立體防洪","上游植樹保水，中游滯洪池與 300 座「水撲滿」微型森林，下游 8 年新增 10 座抽水站。"],
+    ["系統性治水工程","優先投入蘇澳分洪、防潮閘門與各鄉鎮關鍵抽水站。"],
+    ["河川零污染","推動 2+5 水資源中心，污水接管新增 8 萬戶、接管率提升到 75%，河川污染指標全面降到 2 以下。"],
+    ["水資源永續","農業尾水回收供工業使用，推動再生水用於灑水、澆灌、沖廁。"]
+   ],
+   wu:null,
+   wu_custom:"把淹水列為宜蘭兩大課題，但未提出具體的縣政治水做法",
+   why:"淹水是宜蘭人每年的痛，林國漳提出防洪、污水、再生水三位一體的完整方案；吳宗憲只把淹水掛在嘴邊，卻沒有提出任何具體治水政見。"},
+
+  {id:"ocean", name:"海洋", tag:"海洋新宜蘭・藍色經濟新引擎",
+   lin:[
+    ["老舊漁船收購","協助老漁民安心退休。"],
+    ["六星級冷鏈與宜蘭品牌認證","提升漁獲價值。"],
+    ["山海觀光帶","串聯頭城五漁村到南澳海岸，推動蘇澳直航日本「國際藍色公路」。"],
+    ["四季海洋運動","衝浪、潛水、帆船，讓宜蘭成為全台海洋運動重鎮並培育人才。"],
+    ["海洋科技與智慧海灣","結合龍德造船、宜科發展海洋能源，在蘇澳引進 AI 無人機具與智慧海事產業。"]
+   ],
+   wu:null,
+   why:"宜蘭有 111 公里海岸線與南方澳大漁港，林國漳從漁民、漁獲、觀光到海洋科技全面規劃；吳宗憲沒有提出任何海洋或漁業的縣政政見。"},
+
+  {id:"trail", name:"山林步道", tag:"宜蘭雪山麓徑・淺山漫遊計畫",
+   lin:[
+    ["4 年完成踏查定線","串聯頭城到南澳 8 鄉鎮海拔約 800 公尺的產道與步道。"],
+    ["爭取第 8 條國家綠道","讓雪山麓徑成為國家級綠道，並與雪山山脈大縱走連通。"],
+    ["完善安全設施","山屋、營地、補給驛站與衛星通訊救援系統，採手作步道修復。"],
+    ["社區經濟圈","沿線社區發展農產市集與文化生態解說，帶動民宿、接駁與嚮導產業。"],
+    ["國際友誼步道","與世界知名步道締結友誼步道，推向國際遊程。"]
+   ],
+   wu:null,
+   why:"林國漳把宜蘭的山變成能留住旅客、帶動沿線經濟的國際品牌；吳宗憲在山林與步道沒有任何政見。"},
+
+  {id:"traffic", name:"交通", tag:"環環相聯・宜蘭交通聯運計畫",
+   lin:[
+    ["一高二快","高鐵延伸宜蘭、台 62 線延伸宜蘭，並推動北宜快、蘇花快。"],
+    ["五大轉運站","烏石港、礁溪、宜蘭、羅東、蘇澳。"],
+    ["四縱六橫路網","台 2、國五、台 9、台 2 庚四縱，六條東西向聯絡道疏通微血管。"],
+    ["鐵路高架捷運化","讓台鐵像捷運一樣好搭。"],
+    ["縣府自辦公車","學生路線與小黃公車，照顧通學與偏鄉。"],
+    ["U-Bike 與 TPASS","建置 U-Bike 並補助前半小時，加碼 TPASS 月票。"],
+    ["綠色交通示範區","高鐵特區規劃為綠色友善交通示範區，延伸通學步道。"]
+   ],
+   wu:[
+    ["任督二脈交通計畫","台 62 延伸並南延蘇澳、台 2 庚延伸、冬山交流道、鐵路高架、蘭陽溪堤岸東西向快速道路。"],
+    ["智慧交通治理中心","整合車流、事故與號誌數據。"],
+    ["救護綠燈","救護車經過時沿線號誌自動放綠燈。"],
+    ["2 平 1 亮 1 靜","路平、LED 路燈、噪音監測。"]
+   ],
+   why:"吳宗憲的交通只看汽車道路；林國漳同時補上公車、轉運站、U-Bike 與步行，從高鐵一路接到家門口，照顧不開車的學生、長輩與觀光客。"},
+
+  {id:"tour", name:"觀光", tag:"觀光立縣 2.0",
+   lin:[
+    ["四季運動與雪山麓徑新品牌","打破淡旺季，讓宜蘭全年都有來的理由。"],
+    ["三大觀光圈","太平洋海洋觀光圈、雪山麓徑山林觀光圈、蘭陽平原觀光圈，整合溫泉與冷泉。"],
+    ["美食與農遊升級","輔導百年小吃對接米其林與必比登，推動里山低碳餐桌與大型農夫市集。"],
+    ["智慧觀光服務","高頻次觀光接駁、AI 交通引導，建置一站式宜蘭數位觀光平台。"],
+    ["每月觀光會報","縣長親自主持跨局處觀光發展委員會。"]
+   ],
+   wu:[
+    ["吸引旅客過夜","吸引國外觀光團在宜蘭留宿一晚。"],
+    ["宜花東觀光振興小組","攜手花東整合觀光資源。"]
+   ],
+   why:"林國漳有品牌、場域、美食、交通到治理的整套觀光戰略；吳宗憲只有「多住一晚」的目標，沒有說要用什麼讓旅客留下來。"},
+
+  {id:"culture", name:"文化", tag:"文化立縣 2.0",
+   lin:[
+    ["文化場館變文化客廳","夜間開放、志工培訓與導覽制度。"],
+    ["歌仔戲入校與藝術人才扎根","讓宜蘭孩子聽得懂歌仔戲，建立從校園到城市的藝術培育體系。"],
+    ["丸山遺址考古研究基地","建立長期研究與文化教育的基礎。"],
+    ["文化資產保衛戰與節慶保存","全面盤點文資，研議文化假讓學生參與在地民俗。"],
+    ["宜蘭文化 30 年白皮書","辦理城市文化論壇，縣長定期召開文化會議。"],
+    ["文化產業","爭取台灣設計展在宜蘭舉辦、推動蘭陽國際底片影展暨電影節、串聯博物館家族。"]
+   ],
+   wu:null,
+   why:"宜蘭以文化立縣聞名，林國漳要把文化帶進生活、教育與產業；吳宗憲沒有提出具體的文化政見。"},
+
+  {id:"edu", name:"教育", tag:"打造宜蘭大教室",
+   lin:[
+    ["生生有平板、AI 與 STEAM 教育中心","優先補助偏鄉與高需求年段。"],
+    ["宜蘭學與一校一亮點","推動原住民族文化課程與族語傳承。"],
+    ["務實雙語","外語說宜蘭、成立外語導覽志工團，優先補強偏鄉。"],
+    ["六大特色技職學群","擴大國中小職業試探，在地就學到就業一條龍。"],
+    ["增設公幼與非營利幼兒園","高需求地區優先設置。"],
+    ["完善特教與新住民家庭支持","增加特教助理員、巡迴輔導教師與心理師，提供新住民子女語言銜接。"],
+    ["教師行政減量與尊嚴守護","減少不必要評鑑、導入 AI 校務系統，建立教師法律支持系統與暴力應變 SOP。"]
+   ],
+   wu:[
+    ["校安四核心","專業義交、校園周邊交通改善、專責校安人力、AI 電子圍籬。"],
+    ["公立學校法律顧問費","每校每年 8 萬元。"]
+   ],
+   why:"林國漳同時照顧學生、家長與老師，從數位學習、技職、特教到教師減壓都有規劃；吳宗憲只談校園安全與法律顧問，對孩子學什麼、怎麼學沒有任何主張。"},
+
+  {id:"industry", name:"產業", tag:"發展宜蘭新產業",
+   lin:[
+    ["百工百業用 AI","爭取國家 AI 計畫，導入食品、農業、製造、旅宿餐飲業，解決缺工。"],
+    ["升級 18 處既有工業區","AI 升級與水電、土地基礎設施一起處理。"],
+    ["AI 與無人載具測試場域","運用農田、山林、海洋、港口地貌，爭取成為真實商業應用測試場。"],
+    ["爭取中研院宜蘭院區","落腳高鐵特區，整合中研院、宜蘭大學與宜蘭科學園區。"],
+    ["承接南港生技外溢","發展新藥、生醫、AI 與能源的試製與產業化基地。"],
+    ["健康生活新經濟","運動旅遊品牌、溫泉療癒、熟齡「第二人生」旅居。"]
+   ],
+   wu:[
+    ["引進矽光子封裝測試","爭取進駐宜蘭科學園區，主打高薪就業。"],
+    ["北宜雙科 AI 合作","與北部科技廊帶合作。"],
+    ["High-Tech 產官學聯盟","連結竹竹苗科技廊帶。"]
+   ],
+   why:"吳宗憲把希望押在單一產業招商；林國漳同時升級在地 18 處工業區與中小企業、爭取國家級科研機構進駐，讓宜蘭現有的老闆和員工也一起受惠。"}
+];
+
+const $ = s => document.querySelector(s);
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const trophy = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 3h10v2h3v3a4 4 0 0 1-4 4h-.3A5 5 0 0 1 13 14.9V17h3v3H8v-3h3v-2.1A5 5 0 0 1 8.3 12H8a4 4 0 0 1-4-4V5h3V3zm0 4H6v1a2 2 0 0 0 1 1.7V7zm10 0v2.7A2 2 0 0 0 18 8V7h-1z"/></svg>';
+
+let state = {cat:"all", q:"", onlyNone:false, expanded:false};
+try{ const s = JSON.parse(localStorage.getItem("ylcmp")||"{}"); if(typeof s.onlyNone==="boolean") state.onlyNone=s.onlyNone; }catch(e){}
+
+function totals(){
+  const linN = DATA.reduce((a,c)=>a+c.lin.length,0);
+  const wuN = DATA.reduce((a,c)=>a+(c.wu?c.wu.length:0),0);
+  const none = DATA.filter(c=>!c.wu).length;
+  return {linN, wuN, none, cats:DATA.length};
+}
+
+function renderScore(){
+  const t = totals();
+  countUp($("#sLinN"), t.linN);
+  countUp($("#sWuN"), t.wuN);
+  $("#sCats").textContent = t.cats;
+  $("#sWuNone").textContent = t.none;
+  $("#sWins").textContent = t.cats;
+}
+function countUp(el, to){
+  el.textContent = to;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  let n = 0; const step = Math.max(1, Math.ceil(to/20));
+  const tick = () => { n = Math.min(to, n+step); el.textContent = n; if(n<to) setTimeout(tick, 40); };
+  el.textContent = 0; tick();
+}
+
+function renderMap(){
+  const max = Math.max(...DATA.map(c=>Math.max(c.lin.length, c.wu?c.wu.length:0)));
+  const w = n => (n/max*82).toFixed(1)+"%";
+  $("#map").innerHTML = DATA.map(c=>`
+    <button class="drow" type="button" data-go="${c.id}" aria-label="${c.name}：林國漳 ${c.lin.length} 項，吳宗憲 ${c.wu?c.wu.length+" 項":"未提出"}">
+      <span class="bar-l"><b>${c.lin.length}</b><i style="width:${w(c.lin.length)}"></i></span>
+      <span class="cat">${c.name}</span>
+      <span class="bar-r">${c.wu ? `<i style="width:${w(c.wu.length)}"></i><b>${c.wu.length}</b>` : `<span class="nil">沒有提出</span>`}</span>
+    </button>`).join("");
+  $("#map").onclick = e => {
+    const b = e.target.closest("[data-go]"); if(!b) return;
+    state.cat = "all"; state.q = ""; state.onlyNone = false;
+    $("#q").value = ""; $("#onlyNone").checked = false;
+    renderChips(); renderCards();
+    const el = document.getElementById("c-"+b.dataset.go);
+    if(el){ el.classList.remove("collapsed"); el.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto":"smooth"}); }
+  };
+}
+
+function renderChips(){
+  const opts = [{id:"all",name:"全部"}].concat(DATA);
+  $("#chips").innerHTML = opts.map(o=>`<button class="chip" type="button" data-cat="${o.id}" aria-pressed="${state.cat===o.id}">${o.name}</button>`).join("");
+}
+$("#chips").addEventListener("click", e=>{
+  const b = e.target.closest("[data-cat]"); if(!b) return;
+  state.cat = b.dataset.cat; renderChips(); renderCards();
+});
+
+function matches(c){
+  if(state.cat!=="all" && c.id!==state.cat) return false;
+  if(state.onlyNone && c.wu) return false;
+  if(!state.q) return true;
+  const hay = [c.name,c.tag,c.why,...c.lin.flat(),...(c.wu||[]).flat()].join(" ");
+  return hay.includes(state.q);
+}
+function itemsHTML(list){
+  return list.map((it,i)=>`<li class="${i>=3?"extra":""}"><span class="n">${esc(it[0])}</span><span class="d">${esc(it[1])}</span></li>`).join("");
+}
+function renderCards(){
+  const list = DATA.filter(matches);
+  $("#count").textContent = `顯示 ${list.length} / ${DATA.length} 類`;
+  if(!list.length){ $("#cards").innerHTML = `<div class="empty-state">找不到符合的政見，換個關鍵字試試。</div>`; return; }
+  $("#cards").innerHTML = list.map(c=>{
+    const hasMore = c.lin.length>3 || (c.wu && c.wu.length>3);
+    const wuCol = c.wu
+      ? `<ul class="items">${itemsHTML(c.wu)}</ul>`
+      : `<div class="none">未提出相關政見<small>${esc(c.wu_custom || "公開資料中未見此類宜蘭縣政政見")}</small></div>`;
+    return `
+    <article class="card ${state.expanded?"":"collapsed"}" id="c-${c.id}">
+      <div class="card-top">
+        <div><div class="tag">${esc(c.tag)}</div><h3>${esc(c.name)}</h3></div>
+        <span class="win">${trophy}林國漳勝</span>
+      </div>
+      <div class="cols">
+        <div class="col lin">
+          <div class="col-h"><b>林國漳</b><span>${c.lin.length} 項</span></div>
+          <ul class="items">${itemsHTML(c.lin)}</ul>
+        </div>
+        <div class="col wu">
+          <div class="col-h"><b>吳宗憲</b><span>${c.wu?c.wu.length+" 項":"0 項"}</span></div>
+          ${wuCol}
+        </div>
+      </div>
+      <div class="why"><span class="lbl">勝出理由</span><p>${esc(c.why)}</p></div>
+      <div class="why" style="padding-block:10px"><button class="more" type="button" data-toggle="${c.id}">${state.expanded?"收合細項":(hasMore?"展開全部細項與說明":"展開說明")}</button></div>
+    </article>`;
+  }).join("");
+}
+$("#cards").addEventListener("click", e=>{
+  const b = e.target.closest("[data-toggle]"); if(!b) return;
+  const card = document.getElementById("c-"+b.dataset.toggle);
+  const collapsed = card.classList.toggle("collapsed");
+  b.textContent = collapsed ? "展開全部細項與說明" : "收合細項";
+});
+$("#q").addEventListener("input", e=>{ state.q = e.target.value.trim(); renderCards(); });
+$("#onlyNone").checked = state.onlyNone;
+$("#onlyNone").addEventListener("change", e=>{
+  state.onlyNone = e.target.checked;
+  try{ localStorage.setItem("ylcmp", JSON.stringify({onlyNone:state.onlyNone})); }catch(err){}
+  renderCards();
+});
+$("#expandAll").addEventListener("click", ()=>{
+  state.expanded = !state.expanded;
+  $("#expandAll").textContent = state.expanded ? "全部收合" : "全部展開";
+  renderCards();
+});
+
+/* ---------- 山水地景 ---------- */
+const SPOTS = {
+  forest:[150,196,"mtn"], trail:[300,182,"mtn"], hakka:[430,214,"mtn"],
+  water:[520,296,"river"],
+  sport:[70,330,"plain"], agri:[150,312,"plain"], labor:[110,392,"plain"], welfare:[230,358,"plain"],
+  kids:[220,420,"plain"], culture:[320,330,"plain"], elder:[330,402,"plain"], women:[420,366,"plain"],
+  edu:[520,404,"plain"], industry:[610,350,"plain"], youth:[430,420,"plain"], traffic:[660,300,"plain"],
+  tour:[750,350,"sea"], ocean:[905,330,"sea"]
+};
+const NS = "http://www.w3.org/2000/svg";
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let land = {mode:"lin", zone:"all", sel:"forest"};
+
+function rnd(seed){ return () => (seed = (seed*16807) % 2147483647) / 2147483647; }
+function buildTrees(){
+  const r = rnd(42), g = $("#trees"), t = totals();
+  const total = 70, keep = Math.round(total * t.wuN / t.linN);
+  let html = "";
+  for(let i=0;i<total;i++){
+    // 山坡與平原邊緣隨機種樹，避開海
+    const x = 10 + r()*660, base = x<700 ? 250 + (x>350?10:0) : 270;
+    const y = base + r()*(i%3===0 ? 140 : 40);
+    const s = 7 + r()*7;
+    html += `<path class="tree" data-k="${i<keep?1:0}" fill="var(--tree)" d="M${x.toFixed(1)},${(y-s*2.2).toFixed(1)} L${(x+s).toFixed(1)},${y.toFixed(1)} L${(x-s).toFixed(1)},${y.toFixed(1)} Z"/>`;
+  }
+  g.innerHTML = html;
+  const st = rnd(7); let sh = "";
+  for(let i=0;i<40;i++) sh += `<circle cx="${(st()*1000).toFixed(0)}" cy="${(st()*150).toFixed(0)}" r="${(st()*1.4+.4).toFixed(1)}"/>`;
+  $("#stars").innerHTML = sh;
+}
+function buildPins(){
+  $("#pins").innerHTML = DATA.map(c=>{
+    const [x,y] = SPOTS[c.id];
+    return `<g class="pin" tabindex="0" role="button" data-id="${c.id}" transform="translate(${x},${y})" aria-label="${c.name}">
+      <circle class="halo" r="22"/><circle class="dotp" r="11"/><text y="-17">${c.name}</text></g>`;
+  }).join("");
+}
+function paintLand(){
+  const scene = $("#scene");
+  scene.classList.toggle("wu", land.mode==="wu");
+  document.querySelectorAll(".seg-b").forEach(b=>b.setAttribute("aria-pressed", b.dataset.mode===land.mode));
+  document.querySelectorAll(".zone-b").forEach(b=>b.setAttribute("aria-pressed", b.dataset.zone===land.zone));
+  document.querySelectorAll("#trees .tree").forEach(tr=>tr.classList.toggle("gone", land.mode==="wu" && tr.dataset.k==="0"));
+  document.querySelectorAll(".pin").forEach(p=>{
+    const c = DATA.find(d=>d.id===p.dataset.id);
+    const dot = p.querySelector(".dotp");
+    dot.style.fill = land.mode==="lin" ? "var(--lin)" : "var(--wu-blue)";
+    p.classList.toggle("void", land.mode==="wu" && !c.wu);
+    p.classList.toggle("dim", land.zone!=="all" && SPOTS[c.id][2]!==land.zone);
+    p.classList.toggle("sel", c.id===land.sel);
+  });
+  renderInfo();
+}
+function renderInfo(){
+  const c = DATA.find(d=>d.id===land.sel), t = totals();
+  const zoneName = {mtn:"山",river:"溪",plain:"平原",sea:"海"}[SPOTS[c.id][2]];
+  const lead = land.mode==="lin"
+    ? `林國漳的宜蘭：${t.cats} 個領域都有政見，山、溪、平原、海一個都沒漏。`
+    : `吳宗憲的宜蘭：${t.none} 個領域是空白的，樹少了、溪也細了。`;
+  $("#landInfo").innerHTML = `
+    <div><p style="color:var(--muted);font-size:13px">${lead}</p><h3>${zoneName}・${c.name}</h3></div>
+    <div class="vsline"><span>林國漳 <b class="l">${c.lin.length} 項</b></span>
+      <span>吳宗憲 ${c.wu?`<b class="w">${c.wu.length} 項</b>`:`<b class="x">沒有提出</b>`}</span>
+      <span style="color:var(--muted)">${esc(c.lin[0][0])}、${esc(c.lin[1][0])}…</span></div>
+    <button type="button" class="go" data-go="${c.id}">看完整對照</button>`;
+}
+function goTo(id){
+  state.cat = "all"; state.q = ""; state.onlyNone = false;
+  $("#q").value = ""; $("#onlyNone").checked = false;
+  renderChips(); renderCards();
+  const el = document.getElementById("c-"+id);
+  if(el){ el.classList.remove("collapsed"); el.scrollIntoView({behavior: reduce ? "auto":"smooth"}); }
+}
+$("#pins").addEventListener("click", e=>{ const p = e.target.closest(".pin"); if(p){ land.sel = p.dataset.id; paintLand(); } });
+$("#pins").addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ const p = e.target.closest(".pin"); if(p){ e.preventDefault(); land.sel = p.dataset.id; paintLand(); } } });
+$("#landInfo").addEventListener("click", e=>{ const b = e.target.closest("[data-go]"); if(b) goTo(b.dataset.go); });
+document.querySelector(".seg").addEventListener("click", e=>{ const b = e.target.closest("[data-mode]"); if(b){ land.mode = b.dataset.mode; paintLand(); } });
+document.querySelector(".zones").addEventListener("click", e=>{
+  const b = e.target.closest("[data-zone]"); if(!b) return;
+  land.zone = b.dataset.zone;
+  if(land.zone!=="all" && SPOTS[land.sel][2]!==land.zone) land.sel = DATA.find(c=>SPOTS[c.id][2]===land.zone).id;
+  paintLand();
+});
+if(!reduce){
+  $("#scene").addEventListener("pointermove", e=>{
+    const r = e.currentTarget.getBoundingClientRect();
+    const dx = (e.clientX - r.left)/r.width - .5, dy = (e.clientY - r.top)/r.height - .5;
+    $("#lyFar").style.transform = `translate(${dx*-10}px,${dy*-4}px)`;
+    $("#lyNear").style.transform = `translate(${dx*-20}px,${dy*-6}px)`;
+    $("#sun").style.transform = `translate(${dx*-4}px,${dy*-3}px)`;
+  });
+  $("#scene").addEventListener("pointerleave", ()=>{ ["#lyFar","#lyNear","#sun"].forEach(s=>$(s).style.transform=""); });
+}
+buildTrees(); buildPins(); paintLand();
+
+renderScore(); renderMap(); renderChips(); renderCards();
+</script>
+
+</body>
+</html>
